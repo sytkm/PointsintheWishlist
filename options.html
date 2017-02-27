@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<title>options</title>
+	<script src="./options.js"></script>
+</head>
+<body>
+	<form name="form1" action="">
+
+	<p>
+		読み込み時間：
+		<input type="number" name="delayTime" id="delaytime" min="100" step="100" value="2000">
+	</p>
+	<p>
+		読み込みタイプ：
+		<select name="loadType" id="loadid">
+			<option value="autoload" selected>自動</option>
+			<option value="pushbutton" disabled>ボタン</option>
+		</select>
+	</p>
+	<p>
+		Fetch方法：
+		<select name="fetchType" id="fetchid">
+			<option value="fetchapi" disabled>FetchAPI</option>
+			<option value="jqueryajax" selected>jQuery</option>
+		</select>
+	</p>
+	<p>
+		<input type="button" id="save" value="保存" >
+	</p>
+	</form>
+
+</body>
+</html>
