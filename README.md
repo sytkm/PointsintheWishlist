@@ -12,8 +12,8 @@ AmazonのWishlistに入っているKindle本のAmazonポイントを表示させ
 1. 入手したフォルダを指定して選択をクリック
 
 ### Firefox
-Firefoxをメインで使っているわけではないので不明
-ただ、WebExtensionsAPIで開発しているため、以下の通りに動かせばいけるのではないかと思います(未確認)
+Firefoxをメインで使っているわけではないので不明  
+ただ、WebExtensionsAPIで開発しているため、以下の通りに動かせばいけるのではないかと思います(未確認)  
 https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions/Porting_from_Google_Chrome
 
 ## Usage
@@ -22,11 +22,11 @@ https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions/Porting_from
 
 ## Update History
 0.2.0
-AmazonのWishlistのurlが違うものができていたので対応ページに追加
-Wishlistのページ構成がページ移動から無限スクロールになっていたので対応
-いつの間にかFetchAPIが使えるようになっていたのでEnableに　デフォルトもFetchAPIに
-jQueryの新しいバージョンが出ていたので確認したところ、問題なく動作したので更新
-その他いくつかリファクタ
+* AmazonのWishlistのurlが違うものができていたので対応ページに追加
+* Wishlistのページ構成がページ移動から無限スクロールになっていたので対応
+* いつの間にかFetchAPIが使えるようになっていたのでEnableに　デフォルトもFetchAPIに
+* jQueryの新しいバージョンが出ていたので確認したところ、問題なく動作したので更新
+* その他いくつかリファクタ
 
 ## License
 Copyright (c) 2017 sytkm
