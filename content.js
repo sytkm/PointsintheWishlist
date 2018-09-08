@@ -1,71 +1,63 @@
-var pointpages;
 window.addEventListener("load",function(eve){
-	//options.htmlで設定した値をAmazonのローカルストレージに移す	
+	//options.htmlで設定した値をAmazonのローカルストレージに移す
 	chrome.runtime.sendMessage({method: "getLocalStorage", key1: "fetchType",key2:"loadType",key3:"delayTime"}, function(response) {
 		localStorage["fetchType"]=response.data1;
 		localStorage["loadType"]=response.data2;
 		localStorage["delayTime"]=response.data3;
 	});
+	//前のセッションが残っていた場合を考慮し最初のロード時に消す
+	sessionStorage.clear()
+
 	//fetchAPIを用いるかjqueryのajaxを用いるか
 	if(localStorage["fetchType"]=="fetchapi"){
 		wishpoints(true);
 	}else if(localStorage["fetchType"]=="jqueryajax"){
 		wishpoints(false);
 	}
-	//wishlistのどのページのポイントを読み込んだか
-	//pointpagesはfalseならばそのページを読み込んである
-	pointpages=[];
-	var pag = document.getElementsByClassName("a-");
-	var selectp = document.getElementsByClassName("a-selected");
-	for(let i=0;i<=pag.length;i++){
-		pointpages.push(true);
-	}
-	//複数ページにまたがっている場合には現在表示しているページをチェック
-	if(selectp.length>0){
-		pointpages[Number(selectp[0].firstElementChild.innerText)-1]=false;
-	}
 },false);
 
-window.addEventListener("click",function(eve){
+//DOMの変更を監視する
+const obtarget = document.getElementById("g-items");
+const observer = new MutationObserver(records =>{
 	//debug
-	//console.log(eve.path[0]);
-	//console.log(pointpages);
-	//そのページのポイントを読み込んでいないのならば読み込む
-	//すぐ読み込むとDOMが生成されないままfetchし始めるので、一定時間待つ
-	if(pointpages[Number(eve.path[0].innerText)-1]){
-		pointpages[Number(eve.path[0].innerText)-1]=false;
-		if(localStorage["fetchType"]=="fetchapi"){
-			setTimeout('wishpoints(true)',localStorage["delayTime"]);
-		}else if(localStorage["fetchType"]=="jqueryajax"){
-			setTimeout('wishpoints(false)',localStorage["delayTime"]);
-		}
-		//debug
-  		//console.log(pointpages);
-  	}
-},false);
+	//console.log("observe!");
+	if(localStorage["fetchType"]=="fetchapi"){
+		wishpoints(true);
+	}else if(localStorage["fetchType"]=="jqueryajax"){
+		wishpoints(false);
+	}
+});
+observer.observe(obtarget,{childList:true});
 
 function wishpoints(enablefetch){
 	const dom_parser = new DOMParser();
 	//wishlist内のアイテムのリスト
-	let itemList = document.getElementsByClassName("price-section");
+	const itemList = document.getElementsByClassName("price-section");
+	//どこまで読み込んだのかsessionStorageに記録
+	const olditemnum = sessionStorage.getItem("storageItemNum")||0;
 	//debug
 	//console.log(itemList);
-	//全てのアイテムに対しfetchを行う
-	for(let item of itemList){
-		let asin = JSON.parse(item.attributes["data-item-prime-info"].value).asin;
+	//console.log(olditemnum);
+	//以前に調べてないアイテムに対しfetchを行う
+	for(let item of Array.from(itemList).slice(olditemnum)){
+		const asin = JSON.parse(item.attributes["data-item-prime-info"].value).asin;
 
 		if(enablefetch){
-			console.log("fetch");
+			//console.log("fetch");
 			fetch('https://www.amazon.co.jp/dp/'+asin)
 			.then(res=>res.text())
 			.then(text=>{
 			const lopoints = dom_parser.parseFromString(text, "text/html").getElementsByClassName("loyalty-points");
 			//debug
 			//console.log(lopoints);
-			const kindlepoints = lopoints[0].children[1].innerText.trim();
+			//loyalty-pointsがない場合にはエラーが出るため存在判定
+			let points;
+			if(lopoints.length!=0){
+				points = lopoints[0].children[1].innerText.trim();
+			}
 			//debug
-			console.log(kindlepoints);
-			item.firstElementChild.insertAdjacentHTML("beforeend", " " + kindlepoints);})
+			//console.log(points);
+			item.firstElementChild.insertAdjacentHTML("beforeend", " " + points);})
 			.catch(err=>console.error(err));
 		}else{
 			//debug
@@ -79,14 +71,18 @@ function wishpoints(enablefetch){
 				//kindle本でポイントがついている場合のみ計算
 				if(lopoints.length){
 					//trimをすることでスペースを削除
-					var kindlepoints = lopoints[0].children[1].innerText.trim();
+					var points = lopoints[0].children[1].innerText.trim();
 					//debug
 					// console.log(kindlepoints);
-					item.firstElementChild.insertAdjacentHTML("beforeend", " " + kindlepoints);
+					item.firstElementChild.insertAdjacentHTML("beforeend", " " + points);
 				}
 			}).fail(function(xhr,status,error){
 				console.error(error);
 			});
 		}
 	}
+	//debug
+	console.log(itemList.length);
+	//セッションストレージに現在の読み込み数を記録
+	sessionStorage.setItem("storageItemNum", itemList.length);
 }
