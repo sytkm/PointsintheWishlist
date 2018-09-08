@@ -6,7 +6,7 @@ window.addEventListener("load",function(eve){
 		localStorage["delayTime"]=response.data3;
 	});
 	//前のセッションが残っていた場合を考慮し最初のロード時に消す
-	sessionStorage.clear()
+	sessionStorage.clear();
 
 	//fetchAPIを用いるかjqueryのajaxを用いるか
 	if(localStorage["fetchType"]=="fetchapi"){
@@ -51,14 +51,14 @@ function wishpoints(enablefetch){
 			//debug
 			//console.log(lopoints);
 			//loyalty-pointsがない場合にはエラーが出るため存在判定
-			let points;
+			let points = "";
 			if(lopoints.length!=0){
 				points = lopoints[0].children[1].innerText.trim();
+				item.firstElementChild.insertAdjacentHTML("beforeend", " " + points);
 			}
 			//debug
 			//console.log(points);
-			item.firstElementChild.insertAdjacentHTML("beforeend", " " + points);})
-			.catch(err=>console.error(err));
+		}).catch(err=>console.error(err));
 		}else{
 			//debug
 			// console.log("jquery ajax");
