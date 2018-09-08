@@ -3,7 +3,7 @@
 AmazonのWishlistに入っているKindle本のAmazonポイントを表示させる拡張
 
 # Version
-0.2.0
+0.2.1
 
 ## Install
 ### Chrome
@@ -21,6 +21,9 @@ https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions/Porting_from
 1. AmazonのWishlistのページを開いて少し待つとポイントが値段の隣に表示される
 
 ## Update History
+0.2.1
+bugfix
+
 0.2.0
 * AmazonのWishlistのurlが違うものができていたので対応ページに追加
 * Wishlistのページ構成がページ移動から無限スクロールになっていたので対応
