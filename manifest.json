@@ -1,7 +1,7 @@
 {
 	"name": "Insert AmazonPoints in the Wishlist",
-	"version":"0.2.1",
-	"manifest_version":2,
+	"version":"0.3.0",
+	"manifest_version":3,
 	"description":"AmazonのWishlistに入っているKindle本のAmazonポイントを表示させる拡張。",
 	"content_scripts":[
 		{
@@ -9,12 +9,17 @@
 						"https://www.amazon.co.jp/gp/registry/wishlist/*",
 						"https://www.amazon.co.jp/gp/wishlist/*",
 						"https://www.amazon.co.jp/hz/wishlist/*"],
-			"js":["jquery-3.3.1.min.js", "content.js"],
+			"js":["content.js"],
 			"run_at":"document_end"
 		}
 	],
-	"options_page":"options.html",
-	"background":{
-		"scripts": ["background.js"]
-	}
+	"options_ui":{
+		"page":"options.html"
+	},
+	"permissions":[
+		"activeTab", 
+		"scripting",
+		"storage"
+	]
+
 }

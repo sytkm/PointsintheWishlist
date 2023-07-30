@@ -3,24 +3,31 @@
 AmazonのWishlistに入っているKindle本のAmazonポイントを表示させる拡張
 
 # Version
-0.2.1
+0.3.0
 
 ## Install
 ### Chrome
 1. git cloneやZIP Downloadを行いファイルを入手
-1. Chrome拡張機能画面の上部のデベロッパーモードにチェックを入れて、「パッケージ化されてない拡張機能を読み込む」をクリック
+1. 拡張機能管理画面(chrome://extensions/)の上部のデベロッパーモードにチェックを入れて、「パッケージ化されてない拡張機能を読み込む」をクリック
 1. 入手したフォルダを指定して選択をクリック
 
-### Firefox
-Firefoxをメインで使っているわけではないので不明  
-ただ、WebExtensionsAPIで開発しているため、以下の通りに動かせばいけるのではないかと思います(未確認)  
-https://developer.mozilla.org/ja/docs/Mozilla/Add-ons/WebExtensions/Porting_from_Google_Chrome
+### Microsoft Edge
+1. git cloneやZIP Downloadを行いファイルを入手
+1. 拡張機能管理画面(edge://extensions/)の左下にある開発者モードをオンにして、「展開して読み込み」をクリック
+1. 入手したフォルダを指定して選択をクリック
 
 ## Usage
 1. インストール後オプション画面が開くので、保存をクリック
 1. AmazonのWishlistのページを開いて少し待つとポイントが値段の隣に表示される
 
 ## Update History
+0.3.0
+* Manifest V3に対応
+* fetchAPIがどこでも利用できるようになっているので、jQueryを削除
+* Service Workerを利用する必要がないため削除
+* ポイントのサイズ・色を見やすく
+* オプションページをoptions_uiに
+
 0.2.1
 bugfix
 
@@ -32,6 +39,6 @@ bugfix
 * その他いくつかリファクタ
 
 ## License
-Copyright (c) 2017 sytkm
+Copyright (c) 2017-2023 sytkm
 Released under the MIT license
 http://opensource.org/licenses/mit-license.php
